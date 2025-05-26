@@ -1,40 +1,81 @@
-Objetivo
-Implementar una arquitectura de procesador RISC-V con diseño de ciclo único (single-cycle) en Verilog, integrando todos los bloques funcionales necesarios, verificando su comportamiento mediante simulación y analizando su funcionamiento instrucción por instrucción.
+# RISC-V RV32I Single-Cycle Processor
 
-🛠️ Requerimientos
-Conocimientos básicos de arquitectura de computadores (etapas de ejecución de instrucciones).
+Este repositorio contiene una implementación de un procesador RISC-V de un solo ciclo (**single-cycle**) en Verilog 2001.
 
-Familiaridad con el conjunto de instrucciones RISC-V RV32I.
+## Estructura del Proyecto
+```plaintext
+riscv_single_cycle/
+├── src/                      # Módulos Verilog
+│   ├── program_counter.v     # ProgramCounter
+│   ├── instruction_memory.v  # InstructionMemory
+│   ├── register_file.v       # RegisterFile
+│   ├── immediate_generator.v # ImmediateGenerator
+│   ├── alu_control.v         # ALUControl
+│   ├── alu.v                 # ALU
+│   ├── control_unit.v        # ControlUnit
+│   ├── data_memory.v         # DataMemory
+│   ├── mux.v                 # Mux2 genérico
+│   ├── adder.v               # Adder
+│   └── branch_comparator.v   # BranchComparator
+├── program.mem               # Programa de prueba en formato hex
+├── testbench/                # Bancos de prueba
+│   └── top_tb.v              # Testbench para simulación
+└── README.md                 # Documentación del proyecto
+```
 
-Conocimientos en diseño digital con Verilog.
+## Descripción de Módulos
 
-Herramientas recomendadas: ModelSim, Quartus.
+- **ProgramCounter**: Mantiene y actualiza el PC.
+- **InstructionMemory**: ROM de instrucciones (`program.mem`).
+- **RegisterFile**: Banco de 32 registros de 32 bits con dos puertos de lectura y uno de escritura.
+- **ImmediateGenerator**: Extrae e interpola el campo inmediato según tipo I, S, B, J.
+- **ALUControl**: Decodifica `funct3`/`funct7` y `ALUOp` para generar la señal `ALUControl`.
+- **ALU**: Unidad aritmético-lógica.
+- **ControlUnit**: Genera señales de control globales (`ALUSrc`, `MemWrite`, etc.) según `opcode`.
+- **DataMemory**: RAM para `lw` y `sw`.
+- **Mux2**: Multiplexores genéricos de 2 a 1.
+- **Adder**: Suma de 32 bits, usado para PC+4 y PC+inmediato.
+- **BranchComparator**: Señal de salto condicional (`beq`).
 
-🧩 Bloques funcionales requeridos
-Debes implementar los siguientes módulos en Verilog, de forma estructurada:
+## Requisitos
 
-Módulo	Función principal
-ProgramCounter	Mantiene la dirección de la instrucción actual.
-InstructionMemory	Memoria ROM que almacena el conjunto de instrucciones del programa.
-RegisterFile	Banco de registros (32 registros de 32 bits), con dos lecturas y una escritura.
-ImmediateGenerator	Extrae e interpreta los campos inmediatos según el tipo de instrucción (I, S, B…).
-ALUControl	Genera la señal de operación de la ALU a partir de la instrucción.
-ALU	Unidad lógica-aritmética que ejecuta operaciones según la instrucción.
-ControlUnit	Genera señales de control globales según el opcode.
-DataMemory	Memoria RAM para operaciones de carga/almacenamiento.
-Mux (multiplexores)	Permiten seleccionar entradas hacia la ALU o direcciones.
-Adder	Suma de direcciones para el cálculo del siguiente PC.
-BranchComparator	Compara registros para instrucciones de salto condicional.
-📂 Estructura del proyecto (sugerida)
-/riscv_single_cycle/ │ ├── src/ │ ├── top.v ← Módulo principal (interconexión de todos los bloques) │ ├── program_counter.v │ ├── instruction_memory.v │ ├── control_unit.v │ ├── register_file.v │ ├── alu.v │ ├── alu_control.v │ ├── immediate_generator.v │ ├── data_memory.v │ ├── mux.v │ ├── branch_comparator.v │ └── adder.v │ ├── testbench/ │ └── top_tb.v ← Testbench para simular │ ├── program/ │ └── test_program.mem ←
-Código ensamblado para ejecutar
-📑 Instrucciones de desarrollo
-Diseñar cada módulo por separado. Verifica su funcionamiento mediante módulos de prueba individuales (unit testing).
+- **Quartus Prime** (o cualquier herramienta que soporte Verilog 2001)
+- **ModelSim** o **QuestaSim** para simulación
 
-Conectar todos los bloques en el módulo principal top.v, respetando el camino de datos típico de una arquitectura de un solo ciclo.
+## Instrucciones de Síntesis
 
-Cargar el programa de prueba en la memoria de instrucciones (.mem en formato hexadecimal o binario).
+1. Copiar todos los archivos de `src/` y `program.mem` al directorio de proyecto de Quartus.
+2. Asegurarse de agregar `program.mem` en el proyecto (Menú: *Files → Add/Remove Files in Project*).
+3. Compilar el proyecto en Quartus.
 
-Simular el procesador completo con el testbench top_tb.v. Observa señales clave: PC, instruction, ALUResult, RegWrite, MemRead, MemWrite, Branch, etc.
+## Instrucciones de Simulación
 
-Verificar ejecución correcta de instrucciones: operaciones aritméticas, carga/almacenamiento (lw, sw), ramas (beq, bne) y saltos (jal, jalr).
+```tcl
+# En ModelSim/QuestaSim
+vlib work
+vlog src/*.v testbench/top_tb.v
+vsim -c top_tb -do "run 200ns; quit"
+```
+
+Para visualizar ondas:
+
+```bash
+gtkwave waves.vcd
+```
+
+## Testbench
+
+El archivo `testbench/top_tb.v` realiza un programa mínimo de prueba que:
+
+1. Carga inmediatos en `x1` y `x2`.
+2. Ejecuta `add x3, x1, x2`.
+3. Ejecuta `sw` y `lw` a memoria.
+4. Verifica que `x4 == 15`.
+
+## Contribuciones
+
+¡Las contribuciones y mejoras son bienvenidas! Abre un *issue* o un *pull request*.
+
+## Licencia
+
+Este proyecto está bajo la [MIT License](LICENSE).
