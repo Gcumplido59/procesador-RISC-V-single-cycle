@@ -4,22 +4,21 @@ Este repositorio contiene una implementación de un procesador RISC-V de un solo
 
 ## Estructura del Proyecto
 ```plaintext
-riscv_single_cycle/
-├── src/                      # Módulos Verilog
-│   ├── program_counter.v     # ProgramCounter
-│   ├── instruction_memory.v  # InstructionMemory
-│   ├── register_file.v       # RegisterFile
-│   ├── immediate_generator.v # ImmediateGenerator
-│   ├── alu_control.v         # ALUControl
-│   ├── alu.v                 # ALU
-│   ├── control_unit.v        # ControlUnit
-│   ├── data_memory.v         # DataMemory
-│   ├── mux.v                 # Mux2 genérico
-│   ├── adder.v               # Adder
-│   └── branch_comparator.v   # BranchComparator
+
+├── program_counter.v     # ProgramCounter
+├── instruction_memory.v  # InstructionMemory
+├── register_file.v       # RegisterFile
+├── immediate_generator.v # ImmediateGenerator
+├── alu_control.v         # ALUControl
+├── alu.v                 # ALU
+├── control_unit.v        # ControlUnit
+├── data_memory.v         # DataMemory
+├── mux.v                 # Mux2 genérico
+├── adder.v               # Adder
+└── branch_comparator.v   # BranchComparator
 ├── program.mem               # Programa de prueba en formato hex
 ├── testbench/                # Bancos de prueba
-│   └── top_tb.v              # Testbench para simulación
+└── top_tb.v              # Testbench para simulación
 └── README.md                 # Documentación del proyecto
 ```
 
