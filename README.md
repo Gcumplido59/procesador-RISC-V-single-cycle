@@ -71,11 +71,3 @@ El archivo `testbench/top_tb.v` realiza un programa mínimo de prueba que:
 2. Ejecuta `add x3, x1, x2`.
 3. Ejecuta `sw` y `lw` a memoria.
 4. Verifica que `x4 == 15`.
-
-## Contribuciones
-
-¡Las contribuciones y mejoras son bienvenidas! Abre un *issue* o un *pull request*.
-
-## Licencia
-
-Este proyecto está bajo la [MIT License](LICENSE).
