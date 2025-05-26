@@ -1,8 +1,8 @@
 module BranchComparator(
-    input  logic [31:0] A,
-    input  logic [31:0] B,
-    output logic        eq,
-    output logic        ne
+    input  [31:0] A,
+    input  [31:0] B,
+    output        eq,
+    output        ne
 );
     assign eq = (A == B);
     assign ne = (A != B);

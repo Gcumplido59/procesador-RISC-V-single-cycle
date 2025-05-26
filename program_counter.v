@@ -1,10 +1,10 @@
-module ProgramCounter(
-    input  logic        clk,
-    input  logic        reset,
-    input  logic [31:0] next_pc,
-    output logic [31:0] pc
+module program_counter(
+    input clk,
+    input reset,
+    input [31:0] next_pc,
+    output reg [31:0] pc
 );
-    always_ff @(posedge clk or posedge reset) begin
+    always @(posedge clk or posedge reset) begin
         if (reset)
             pc <= 32'd0;
         else
