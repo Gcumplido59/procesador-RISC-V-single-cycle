@@ -43,7 +43,7 @@ Este repositorio contiene una implementación de un procesador RISC-V de un solo
 
 ## Instrucciones de Síntesis
 
-1. Copiar todos los archivos de `src/` y `program.mem` al directorio de proyecto de Quartus.
+1. Copiar todos los archivos y `program.mem` al directorio de proyecto de Quartus.
 2. Asegurarse de agregar `program.mem` en el proyecto (Menú: *Files → Add/Remove Files in Project*).
 3. Compilar el proyecto en Quartus.
 
@@ -64,7 +64,7 @@ gtkwave waves.vcd
 
 ## Testbench
 
-El archivo `testbench/top_tb.v` realiza un programa mínimo de prueba que:
+El archivo `top_tb.v` realiza un programa mínimo de prueba que:
 
 1. Carga inmediatos en `x1` y `x2`.
 2. Ejecuta `add x3, x1, x2`.
